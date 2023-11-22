@@ -234,7 +234,7 @@ resource "aws_instance" "EC2_A" {
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_A_AZ1.id}"
 
-  key_name = var.aws-key
+  
 
   security_groups = ["${aws_security_group.vpc-a-security-group.id}"]
   associate_public_ip_address = true
@@ -255,7 +255,7 @@ resource "aws_instance" "EC2_B" {
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_B_AZ1.id}"
 
-  key_name = var.aws-key
+  
 
   security_groups = ["${aws_security_group.vpc-b-security-group.id}"]
   associate_public_ip_address = false
@@ -276,7 +276,7 @@ resource "aws_instance" "EC2_C" {
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_C_AZ1.id}"
 
-  key_name = var.aws-key
+  
 
   security_groups = ["${aws_security_group.vpc-c-security-group.id}"]
   associate_public_ip_address = true
