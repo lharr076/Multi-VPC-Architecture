@@ -149,21 +149,21 @@ resource "aws_route_table" "route-table-c" {
 # Create Route to IGW in Route Table A
 resource "aws_route" "internet-a" {
   route_table_id         = "${aws_route_table.route-table-a.id}"
-  destination_cidr_block = "10.0.0.0/16" # Replace with your VPC CIDR block
+  destination_cidr_block = "10.0.0.0/24" # Replace with your VPC CIDR block
   gateway_id       = "${aws_internet_gateway.igw-a.id}"
 }
 
 # Create Route to IGW in Route Table B
 resource "aws_route" "internet-b" {
   route_table_id         = "${aws_route_table.route-table-b.id}"
-  destination_cidr_block = "10.1.0.0/16" # Replace with your VPC CIDR block
+  destination_cidr_block = "10.1.0.0/24" # Replace with your VPC CIDR block
   gateway_id       = "${aws_internet_gateway.igw-b.id}"
 }
 
 # Create Route to IGW in Route Table C
 resource "aws_route" "internet-c" {
   route_table_id         = "${aws_route_table.route-table-c.id}"
-  destination_cidr_block = "10.2.0.0/16" # Replace with your VPC CIDR block
+  destination_cidr_block = "10.2.0.0/24" # Replace with your VPC CIDR block
   gateway_id       = "${aws_internet_gateway.igw-c.id}"
 }
 
@@ -230,7 +230,7 @@ resource "aws_security_group" "vpc-c-security-group" {
 
 # Create VPC A Instance.
 resource "aws_instance" "EC2_A" {
-  ami = "ami-0c0d141edc4f470cc"
+  ami = "ami-09f85f3aaae282910"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_A_AZ1.id}"
 
@@ -251,7 +251,7 @@ resource "aws_instance" "EC2_A" {
 
 # Crate VPC B Instance.
 resource "aws_instance" "EC2_B" {
-  ami = "ami-0c0d141edc4f470cc" 
+  ami = "ami-09f85f3aaae282910" 
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_B_AZ1.id}"
 
@@ -272,7 +272,7 @@ resource "aws_instance" "EC2_B" {
 
 # Create VPC C Instance.
 resource "aws_instance" "EC2_C" {
-  ami = "ami-0c0d141edc4f470cc"
+  ami = "ami-09f85f3aaae282910"
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_C_AZ1.id}"
 
