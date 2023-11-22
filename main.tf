@@ -1,102 +1,58 @@
-# Create VPC A
-resource "aws_vpc" "vpc_a" {
-  cidr_block = "10.0.0.0/16"
-  enable_dns_support = true
-  enable_dns_hostnames = true
+module "vpc_a" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "vpc_a"
+  cidr = "10.0.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.0.0.0/24", "10.0.1.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 
   tags = {
-    Name = "VPC A"
+    Terraform = "true"
+    Environment = "dev"
   }
 }
 
-  # Create VPC B
-resource "aws_vpc" "vpc_b" {
-  cidr_block = "10.1.0.0/16"
-  enable_dns_support = true
-  enable_dns_hostnames = true
+module "vpc_b" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "vpc_b"
+  cidr = "10.1.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.1.0.0/24", "10.1.1.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 
   tags = {
-    Name = "VPC B"
+    Terraform = "true"
+    Environment = "dev"
   }
-
 }
-  # Create VPC C
-resource "aws_vpc" "vpc_c" {
-  cidr_block = "10.2.0.0/16"
-  enable_dns_support = true
-  enable_dns_hostnames = true
+
+module "vpc_c" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = "vpc_c"
+  cidr = "10.2.0.0/16"
+
+  azs             = ["us-east-1a", "us-east-1b"]
+  private_subnets = ["10.2.0.0/24", "10.2.1.0/24"]
+
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
 
   tags = {
-    Name = "VPC C"
+    Terraform = "true"
+    Environment = "dev"
   }
-
 }
+ 
 
-# Create Private Subnet A AZ1
-resource "aws_subnet" "private_subnet_A_AZ1" {
-  vpc_id = "${aws_vpc.vpc_a.id}"
-  cidr_block = "10.0.0.0/24"
-
-  tags = {
-    Name = "Private Subnet A AZ1"
-  }
-
-}
-
-# Create Private Subnet A AZ2
-resource "aws_subnet" "private_subnet_A_AZ2" {
-  vpc_id = "${aws_vpc.vpc_a.id}"
-  cidr_block = "10.0.1.0/24"
-
-  tags = {
-    Name = "Private Subnet A AZ2"
-  }
-
-}
-
-# Create Private Subnet B AZ1
-resource "aws_subnet" "private_subnet_B_AZ1" {
-  vpc_id = "${aws_vpc.vpc_b.id}"
-  cidr_block = "10.1.0.0/24"
-
-  tags = {
-    Name = "Private Subnet B AZ1"
-  }
-
-}
-
-# Create Private Subnet B AZ2
-resource "aws_subnet" "private_subnet_B_AZ2" {
-  vpc_id = "${aws_vpc.vpc_b.id}"
-  cidr_block = "10.1.1.0/24"
-
-  tags = {
-    Name = "Private Subnet B AZ2"
-  }
-
-}
-
-# Create Private Subnet C AZ1
-resource "aws_subnet" "private_subnet_C_AZ1" {
-  vpc_id = "${aws_vpc.vpc_c.id}"
-  cidr_block = "10.2.0.0/24"
-
-  tags = {
-    Name = "Private Subnet C AZ1"
-  }
-
-}
-
-# Create Private Subnet C AZ2
-resource "aws_subnet" "private_subnet_C_AZ2" {
-  vpc_id = "${aws_vpc.vpc_c.id}"
-  cidr_block = "10.2.1.0/24"
-
-  tags = {
-    Name = "Private Subnet C AZ2"
-  }
-
-}
 
 # Create Internet Gateway A
 resource "aws_internet_gateway" "igw-a" {
@@ -230,11 +186,12 @@ resource "aws_security_group" "vpc-c-security-group" {
 
 # Create VPC A Instance.
 resource "aws_instance" "EC2_A" {
-  ami = "ami-09f85f3aaae282910"
+  ami = "ami-0fa1ca9559f1892ec"
   instance_type = "t2.micro"
-  subnet_id = "${aws_subnet.private_subnet_A_AZ1.id}"
-
   
+
+
+
   security_groups = ["${aws_security_group.vpc-a-security-group.id}"]
   associate_public_ip_address = true
 
@@ -250,11 +207,11 @@ resource "aws_instance" "EC2_A" {
 
 # Crate VPC B Instance.
 resource "aws_instance" "EC2_B" {
-  ami = "ami-09f85f3aaae282910" 
+  ami = "ami-0fa1ca9559f1892ec" 
   instance_type = "t2.micro"
-  subnet_id = "${aws_subnet.private_subnet_B_AZ1.id}"
+  
 
- 
+  
 
   security_groups = ["${aws_security_group.vpc-b-security-group.id}"]
   associate_public_ip_address = false
@@ -271,11 +228,11 @@ resource "aws_instance" "EC2_B" {
 
 # Create VPC C Instance.
 resource "aws_instance" "EC2_C" {
-  ami = "ami-09f85f3aaae282910"
+  ami = "ami-0fa1ca9559f1892ec"
   instance_type = "t2.micro"
-  subnet_id = "${aws_subnet.private_subnet_C_AZ1.id}"
+  
 
- 
+
 
   security_groups = ["${aws_security_group.vpc-c-security-group.id}"]
   associate_public_ip_address = true
