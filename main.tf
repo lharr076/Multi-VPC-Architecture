@@ -7,8 +7,8 @@ module "vpc_a" {
   azs             = ["us-east-1a", "us-east-1b"]
   private_subnets = ["10.0.0.0/24", "10.0.1.0/24"]
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = true
+  enable_nat_gateway = false
+  enable_vpn_gateway = false
 
   tags = {
     Terraform = "true"
@@ -25,8 +25,8 @@ module "vpc_b" {
   azs             = ["us-east-1a", "us-east-1b"]
   private_subnets = ["10.1.0.0/24", "10.1.1.0/24"]
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = true
+  enable_nat_gateway = false
+  enable_vpn_gateway = false
 
   tags = {
     Terraform = "true"
@@ -43,8 +43,8 @@ module "vpc_c" {
   azs             = ["us-east-1a", "us-east-1b"]
   private_subnets = ["10.2.0.0/24", "10.2.1.0/24"]
 
-  enable_nat_gateway = true
-  enable_vpn_gateway = true
+  enable_nat_gateway = false
+  enable_vpn_gateway = false
 
   tags = {
     Terraform = "true"
