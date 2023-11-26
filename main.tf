@@ -1,6 +1,7 @@
 # Create VPC A
 resource "aws_vpc" "vpc_a" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "10.0.0.0/24"
+  main_route_table_id = "${aws_route_table.route-table-a.id}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -11,7 +12,8 @@ resource "aws_vpc" "vpc_a" {
 
   # Create VPC B
 resource "aws_vpc" "vpc_b" {
-  cidr_block = "10.1.0.0/16"
+  cidr_block = "10.1.0.0/24"
+  main_route_table_id = "${aws_route_table.route-table-b.id}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -22,7 +24,8 @@ resource "aws_vpc" "vpc_b" {
 }
   # Create VPC C
 resource "aws_vpc" "vpc_c" {
-  cidr_block = "10.2.0.0/16"
+  cidr_block = "10.2.0.0/24"
+  main_route_table_id = "${aws_route_table.route-table-c.id}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -35,7 +38,7 @@ resource "aws_vpc" "vpc_c" {
 # Create Private Subnet A AZ1
 resource "aws_subnet" "private_subnet_A_AZ1" {
   vpc_id = "${aws_vpc.vpc_a.id}"
-  cidr_block = "10.0.0.0/24"
+  cidr_block = "10.0.0.0/25"
 
   tags = {
     Name = "Private Subnet A AZ1"
@@ -46,7 +49,7 @@ resource "aws_subnet" "private_subnet_A_AZ1" {
 # Create Private Subnet A AZ2
 resource "aws_subnet" "private_subnet_A_AZ2" {
   vpc_id = "${aws_vpc.vpc_a.id}"
-  cidr_block = "10.0.1.0/24"
+  cidr_block = "10.0.0.128/25"
 
   tags = {
     Name = "Private Subnet A AZ2"
@@ -57,7 +60,7 @@ resource "aws_subnet" "private_subnet_A_AZ2" {
 # Create Private Subnet B AZ1
 resource "aws_subnet" "private_subnet_B_AZ1" {
   vpc_id = "${aws_vpc.vpc_b.id}"
-  cidr_block = "10.1.0.0/24"
+  cidr_block = "10.1.0.0/25"
 
   tags = {
     Name = "Private Subnet B AZ1"
@@ -68,7 +71,7 @@ resource "aws_subnet" "private_subnet_B_AZ1" {
 # Create Private Subnet B AZ2
 resource "aws_subnet" "private_subnet_B_AZ2" {
   vpc_id = "${aws_vpc.vpc_b.id}"
-  cidr_block = "10.1.1.0/24"
+  cidr_block = "10.1.0.128/25"
 
   tags = {
     Name = "Private Subnet B AZ2"
@@ -79,7 +82,7 @@ resource "aws_subnet" "private_subnet_B_AZ2" {
 # Create Private Subnet C AZ1
 resource "aws_subnet" "private_subnet_C_AZ1" {
   vpc_id = "${aws_vpc.vpc_c.id}"
-  cidr_block = "10.2.0.0/24"
+  cidr_block = "10.2.0.0/25"
 
   tags = {
     Name = "Private Subnet C AZ1"
@@ -90,7 +93,7 @@ resource "aws_subnet" "private_subnet_C_AZ1" {
 # Create Private Subnet C AZ2
 resource "aws_subnet" "private_subnet_C_AZ2" {
   vpc_id = "${aws_vpc.vpc_c.id}"
-  cidr_block = "10.2.1.0/24"
+  cidr_block = "10.2.0.128/25"
 
   tags = {
     Name = "Private Subnet C AZ2"
@@ -98,10 +101,11 @@ resource "aws_subnet" "private_subnet_C_AZ2" {
 
 }
 
+
 # Create Internet Gateway A
 resource "aws_internet_gateway" "igw-a" {
   vpc_id = "${aws_vpc.vpc_a.id}"
-
+  
   tags = {
     Name = "IGW A"
   }
@@ -132,7 +136,7 @@ resource "aws_internet_gateway" "igw-c" {
 resource "aws_route_table" "route-table-a" {
   vpc_id = "${aws_vpc.vpc_a.id}"
   route {
-    cidr_block = "10.0.0.0/16"
+    cidr_block = "10.0.0.0/24"
     gateway_id = "${aws_internet_gateway.igw-a.id}"
   }
 }
@@ -141,7 +145,7 @@ resource "aws_route_table" "route-table-a" {
 resource "aws_route_table" "route-table-b" {
   vpc_id = "${aws_vpc.vpc_b.id}"
   route {
-    cidr_block = "10.1.0.0/16"
+    cidr_block = "10.1.0.0/24"
     gateway_id = "${aws_internet_gateway.igw-b.id}"
   }
 }
@@ -150,7 +154,7 @@ resource "aws_route_table" "route-table-b" {
 resource "aws_route_table" "route-table-c" {
   vpc_id = "${aws_vpc.vpc_c.id}"
   route {
-    cidr_block = "10.2.0.0/16"
+    cidr_block = "10.2.0.0/24"
     gateway_id = "${aws_internet_gateway.igw-c.id}"
   }
 }
@@ -242,7 +246,7 @@ resource "aws_instance" "EC2_B" {
   ami = "ami-0fa1ca9559f1892ec" 
   instance_type = "t2.micro"
   subnet_id = "${aws_subnet.private_subnet_B_AZ1.id}"
-
+  
   
 
   security_groups = ["${aws_security_group.vpc-b-security-group.id}"]
