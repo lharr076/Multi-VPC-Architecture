@@ -1,7 +1,6 @@
 # Create VPC A
 resource "aws_vpc" "vpc_a" {
   cidr_block = "10.0.0.0/24"
-  main_route_table_id = "${aws_route_table.route-table-a.id}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -13,7 +12,6 @@ resource "aws_vpc" "vpc_a" {
   # Create VPC B
 resource "aws_vpc" "vpc_b" {
   cidr_block = "10.1.0.0/24"
-  main_route_table_id = "${aws_route_table.route-table-b.id}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
@@ -25,7 +23,6 @@ resource "aws_vpc" "vpc_b" {
   # Create VPC C
 resource "aws_vpc" "vpc_c" {
   cidr_block = "10.2.0.0/24"
-  main_route_table_id = "${aws_route_table.route-table-c.id}"
   enable_dns_support = true
   enable_dns_hostnames = true
 
