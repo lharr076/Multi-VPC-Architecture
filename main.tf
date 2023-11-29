@@ -144,36 +144,30 @@ resource "aws_nat_gateway" "AZ1B" {
 # Create Route Table A
 resource "aws_route_table" "route-table-a" {
   vpc_id = "${aws_vpc.vpc_a.id}"
-  route {
-    cidr_block = "10.0.0.0/24"
-    gateway_id = "${aws_internet_gateway.igw-a.id}"
-  }
-  route {
-    cidr_block = "0.0.0.0/0"
-  }
+}  
+    
+resource "aws_route" "default_a" {
+  route_table_id = aws_route_table.route-table-a
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = "${aws_internet_gateway.igw-a.id}"
 }
 
 # Create Route Table B
 resource "aws_route_table" "route-table-b" {
   vpc_id = "${aws_vpc.vpc_b.id}"
-  route {
-    cidr_block = "10.1.0.0/24"
-    gateway_id = "${aws_internet_gateway.igw-b.id}"
-  }
-  route {
-    cidr_block = "0.0.0.0/0"
-  }
-  }
+}
+
+resource "aws_route" "default_b" {
+  route_table_id = aws_route_table.route-table-b
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = "${aws_internet_gateway.igw-b.id}"
+}
 
 # Create Route Table C
 resource "aws_route_table" "route-table-c" {
   vpc_id = "${aws_vpc.vpc_c.id}"
-  route {
-    cidr_block = "10.2.0.0/24"
-    gateway_id = "${aws_internet_gateway.igw-c.id}"
-  }
 }
-
+  
 # Create Security Group for VPC A
 resource "aws_security_group" "vpc-a-security-group" {
   name_prefix = "VPC A EC2 Security Group"
