@@ -129,12 +129,27 @@ resource "aws_internet_gateway" "igw-c" {
 
 }
 
+# Create Nat Gateway A AZ1
+resource "aws_nat_gateway" "AZ1A" {
+  connectivity_type = "private"
+  subnet_id         = aws_subnet.private_subnet_A_AZ1.id
+}
+
+# Create Nat Gateway B AZ1
+resource "aws_nat_gateway" "AZ1B" {
+  connectivity_type = "private"
+  subnet_id         = aws_subnet.private_subnet_A_AZ1.id
+}
+
 # Create Route Table A
 resource "aws_route_table" "route-table-a" {
   vpc_id = "${aws_vpc.vpc_a.id}"
   route {
     cidr_block = "10.0.0.0/24"
     gateway_id = "${aws_internet_gateway.igw-a.id}"
+  }
+  route {
+    cidr_block = "0.0.0.0/0"
   }
 }
 
@@ -145,7 +160,10 @@ resource "aws_route_table" "route-table-b" {
     cidr_block = "10.1.0.0/24"
     gateway_id = "${aws_internet_gateway.igw-b.id}"
   }
-}
+  route {
+    cidr_block = "0.0.0.0/0"
+  }
+  }
 
 # Create Route Table C
 resource "aws_route_table" "route-table-c" {
