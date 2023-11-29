@@ -147,7 +147,7 @@ resource "aws_route_table" "route-table-a" {
 }  
     
 resource "aws_route" "default_a" {
-  route_table_id = "${aws_route_table.route-table-a}"
+  route_table_id = aws_route_table.route-table-a.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = "${aws_internet_gateway.igw-a.id}"
 }
@@ -158,7 +158,7 @@ resource "aws_route_table" "route-table-b" {
 }
 
 resource "aws_route" "default_b" {
-  route_table_id = "${aws_route_table.route-table-b}"
+  route_table_id = aws_route_table.route-table-b.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id = "${aws_internet_gateway.igw-b.id}"
 }
